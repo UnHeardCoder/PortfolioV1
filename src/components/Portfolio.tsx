@@ -1,20 +1,14 @@
-"use client";
+
 
 import type React from "react";
-import { useRef } from "react";
 import { Github, Mail, Linkedin, ExternalLink, MapPin } from "lucide-react";
 import { cn } from "../lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Portfolio() {
-  const cardRef = useRef<HTMLDivElement>(null);
-
   return (
-    <div
-      ref={cardRef}
-      className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl pointer-events-none p-4 sm:p-6 mt-4 sm:mt-0"
-    >
+    <div className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl pointer-events-none p-4 sm:p-6 mt-4 sm:mt-0">
       {/* Card content */}
       <div className="relative backdrop-blur-sm bg-white/70 dark:bg-black/50 p-4 sm:p-8 border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg">
         {/* Header */}
