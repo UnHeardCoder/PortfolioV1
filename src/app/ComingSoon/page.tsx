@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Background from "~/components/Background";
-import Portfolio from "~/components/Portfolio";
-
+import Link from "next/link";
 export default function Home() {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
@@ -15,12 +13,12 @@ export default function Home() {
             This project is currently under development. Check back later for updates!
           </p>
           <div className="mt-6 text-center">
-            <a 
+            <Link
               href="/"
               className="inline-block px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors pointer-events-auto"
             >
               Return Home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

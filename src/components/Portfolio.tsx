@@ -1,9 +1,11 @@
 "use client";
 
 import type React from "react";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { Github, Mail, Linkedin, ExternalLink, MapPin } from "lucide-react";
 import { cn } from "../lib/utils";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Portfolio() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -26,7 +28,7 @@ export default function Portfolio() {
             </div>
           </div>
           <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-orange-500 pointer-events-auto transition-transform hover:scale-105">
-            <img src="/images/portfoliopic.png" alt="Profile" className="h-full w-full object-cover" />
+            <Image src="/images/portfoliopic.png" alt="Profile" className="h-full w-full object-cover" />
           </div>
         </div>
 
@@ -77,12 +79,12 @@ export default function Portfolio() {
                   <h4 className="text-base font-medium text-gray-900 dark:text-white">{project.name}</h4>
                   <p className="text-sm text-gray-500 dark:text-gray-400">{project.desc}</p>
                 </div>
-                <a
+                <Link
                   href={project.href}
                   className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-orange-500 hover:text-orange-600"
                 >
                   <ExternalLink className="h-5 w-5" />
-                </a>
+                </Link>
               </div>
             ))}
           </div>
