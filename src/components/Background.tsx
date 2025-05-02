@@ -8,9 +8,10 @@ interface BackgroundProps {
 }
 
 export default function Background({ className = "" }: BackgroundProps) {
-  // Reduced number of squares for better performance
-  const COLS = 12;
-  const ROWS = 30;
+  // Different number of columns for mobile and desktop
+  const MOBILE_COLS = 12;
+  const DESKTOP_COLS = 20;
+  const ROWS = 31;
   const BASE_DELAY = 0.3;
   const NOISE = 0.05;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -18,7 +19,7 @@ export default function Background({ className = "" }: BackgroundProps) {
 
   const getRandomCoordinate = (): [number, number] => [
     Math.floor(Math.random() * ROWS),
-    Math.floor(Math.random() * COLS),
+    Math.floor(Math.random() * MOBILE_COLS),
   ];
 
   const [origin, setOrigin] = useState<[number, number] | undefined>();
@@ -36,22 +37,22 @@ export default function Background({ className = "" }: BackgroundProps) {
 
   const handleSquareClick = (row: number, col: number) => {
     setClickOrigin([row, col]);
-    setTimeout(() => setClickOrigin(null), 2000); // Increased duration to allow ripple to complete
+    setTimeout(() => setClickOrigin(null), 2000);
   };
 
-  const renderSquare = (idx: number) => {
-    const row = Math.floor(idx / COLS);
-    const col = idx % COLS;
+  const renderSquare = (idx: number, cols: number) => {
+    const row = Math.floor(idx / cols);
+    const col = idx % cols;
     const initialDelay =
-      getDistance(row, col, origin) / (Math.sqrt(ROWS ** 2 + COLS ** 2)) * BASE_DELAY + Math.random() * NOISE;
+      getDistance(row, col, origin) / (Math.sqrt(ROWS ** 2 + cols ** 2)) * BASE_DELAY + Math.random() * NOISE;
     const isOrigin = getDistance(row, col, origin) === 0;
 
     const distance = clickOrigin ? getDistance(row, col, clickOrigin) : 0;
-    const maxDistance = Math.sqrt(ROWS ** 2 + COLS ** 2) * 5;
+    const maxDistance = Math.sqrt(ROWS ** 2 + cols ** 2) * 5;
     const normalizedDistance = distance / maxDistance;
     
-    const rippleDelay = distance * 0.015; // Reduced delay for faster ripple
-    const rippleScale = clickOrigin ? Math.max(0.1, 1 - normalizedDistance * 0.5) : 1; // Adjusted for longer distance
+    const rippleDelay = distance * 0.015;
+    const rippleScale = clickOrigin ? Math.max(0.1, 1 - normalizedDistance * 0.5) : 1;
 
     return (
       <motion.div
@@ -95,8 +96,13 @@ export default function Background({ className = "" }: BackgroundProps) {
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
       <div className="p-2">
-        <div className="grid grid-cols-12 auto-rows-fr w-full gap-1">
-          {[...Array(ROWS * COLS)].map((_, idx) => renderSquare(idx))}
+        {/* Mobile grid */}
+        <div className="grid grid-cols-12 auto-rows-fr w-full gap-1 md:hidden">
+          {[...Array(ROWS * MOBILE_COLS)].map((_, idx) => renderSquare(idx, MOBILE_COLS))}
+        </div>
+        {/* Desktop grid */}
+        <div className="hidden md:grid md:grid-cols-20 auto-rows-fr w-full gap-1">
+          {[...Array(ROWS * DESKTOP_COLS)].map((_, idx) => renderSquare(idx, DESKTOP_COLS))}
         </div>
       </div>
     </div>
