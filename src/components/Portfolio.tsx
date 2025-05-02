@@ -11,16 +11,16 @@ export default function Portfolio() {
   return (
     <div
       ref={cardRef}
-      className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl pointer-events-none"
+      className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-xl pointer-events-none p-6"
     >
       {/* Card content */}
       <div className="relative backdrop-blur-sm bg-white/70 dark:bg-black/50 p-8 border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg">
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white">Ben Lundy</h2>
-            <p className="text-xl text-orange-500 font-medium">Junior Developer</p>
-            <div className="flex items-center mt-2 text-base text-gray-500 dark:text-gray-400">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white pointer-events-auto">Ben Lundy</h2>
+            <p className="text-xl text-orange-500 font-medium pointer-events-auto">Junior Developer</p>
+            <div className="flex items-center mt-2 text-base text-gray-500 dark:text-gray-400 pointer-events-auto">
               <MapPin className="h-5 w-5 mr-2" />
               <span>Tillsonburg, ON</span>
             </div>
@@ -31,19 +31,19 @@ export default function Portfolio() {
         </div>
 
         {/* Bio */}
-        <p className="text-base text-gray-600 dark:text-gray-300 mb-6">
-            Welcome! I'm Ben, a web developer building a strong foundation in modern
-            web technologies. I'm driven by a deep interest in learning how things work
-            and a determination to translate that knowledge into functional code. This
-            portfolio represents the start of my professional journey, crafted to showcase 
-            my current abilities and my commitment to continuous improvement and delivering 
-            quality results from day one. I approach challenges with focus and I'm ready
-            to contribute.
+        <p className="text-base text-gray-600 dark:text-gray-300 mb-6 pointer-events-auto">
+          Welcome! I'm Ben, a web developer building a strong foundation in modern
+          web technologies. I'm driven by a deep interest in learning how things work
+          and a determination to translate that knowledge into functional code. This
+          portfolio represents the start of my professional journey, crafted to showcase 
+          my current abilities and my commitment to continuous improvement and delivering 
+          quality results from day one. I approach challenges with focus and I'm ready
+          to contribute.
         </p>
 
         {/* Skills */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Skills</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 pointer-events-auto">Skills</h3>
           <div className="flex flex-wrap gap-3">
             {["React", "Next.js", "Tailwind CSS", "HTML", "CSS", "JavaScript", "Python", "GitHub", "VSCode"].map((skill) => (
               <span
@@ -64,7 +64,7 @@ export default function Portfolio() {
 
         {/* Featured Projects */}
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Featured Projects</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 pointer-events-auto">Featured Projects</h3>
           <div className="space-y-3">
             {[
               { name: "Next Project", desc: "coming soon", href: "/ComingSoon" },
@@ -79,7 +79,7 @@ export default function Portfolio() {
                 </div>
                 <a
                   href={project.href}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-orange-500 hover:text-orange-600"
+                  className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-orange-500 hover:text-orange-600"
                 >
                   <ExternalLink className="h-5 w-5" />
                 </a>
