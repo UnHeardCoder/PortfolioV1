@@ -28,7 +28,7 @@ export default function Portfolio() {
             </div>
           </div>
           <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-orange-500 pointer-events-auto transition-transform hover:scale-105">
-            <Image src="/images/portfoliopic.png" alt="Profile" className="h-full w-full object-cover" />
+            <Image src="/images/portfoliopic.png" alt="Profile" className="h-full w-full object-cover" width={96} height={96}/>
           </div>
         </div>
 
