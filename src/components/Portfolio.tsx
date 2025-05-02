@@ -34,13 +34,12 @@ export default function Portfolio() {
 
         {/* Bio */}
         <p className="text-base text-gray-600 dark:text-gray-300 mb-6 pointer-events-auto">
-          Welcome! I'm Ben, a web developer building a strong foundation in modern
-          web technologies. I'm driven by a deep interest in learning how things work
+          Welcome! I&apos;m Ben, a web developer building a strong foundation in modern
+          web technologies. I&apos;m driven by a deep interest in learning how things work
           and a determination to translate that knowledge into functional code. This
           portfolio represents the start of my professional journey, crafted to showcase 
           my current abilities and my commitment to continuous improvement and delivering 
-          quality results from day one. I approach challenges with focus and I'm ready
-          to contribute.
+          quality results from day one. I&apos;m ready to contribute.
         </p>
 
         {/* Skills */}
