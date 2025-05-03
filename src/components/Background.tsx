@@ -34,18 +34,26 @@ export default function Background({ className = "" }: BackgroundProps) {
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
       <style>{`
-        @keyframes ripple {
-          0% { opacity: 0.3; transform: scale(0.95); }
-          30% { opacity: 0.6; transform: scale(1.02); }
+        @keyframes load {
+          0% { opacity: 0; transform: scale(0.95); }
+          20% { opacity: 0.4; transform: scale(1.01); }
+          40% { opacity: 0.5; transform: scale(1.02); }
+          60% { opacity: 0.4; transform: scale(1.01); }
           100% { opacity: 0.3; transform: scale(0.95); }
         }
+        @keyframes subtle {
+          0% { opacity: 0.3; transform: scale(0.98); }
+          50% { opacity: 0.35; transform: scale(1); }
+          100% { opacity: 0.3; transform: scale(0.98); }
+        }
         .grid-square {
+          opacity: 0;
           background: rgba(64,64,64,0.3);
           border-radius: 0.125rem;
           aspect-ratio: 1/1;
           border: 1px solid rgba(255,255,255,0.1);
           cursor: pointer;
-          animation: ripple 4s infinite;
+          animation: load 4s forwards, subtle 6s infinite 4s;
           transition: background-color 1.5s ease-out, border-color 1.5s ease-out, box-shadow 1.5s ease-out;
         }
         .grid-square:hover {
