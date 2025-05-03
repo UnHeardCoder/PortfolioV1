@@ -8,30 +8,50 @@ interface BackgroundProps {
 }
 
 export default function Background({ className = "" }: BackgroundProps) {
-  // Different number of columns for mobile and desktop
   const MOBILE_COLS = 12;
   const DESKTOP_COLS = 20;
   const ROWS = 31;
   const BASE_DELAY = 0.3;
   const NOISE = 0.05;
+  
   const [isLoaded, setIsLoaded] = useState(false);
   const [clickOrigin, setClickOrigin] = useState<[number, number] | null>(null);
-
-  const getRandomCoordinate = (): [number, number] => [
-    Math.floor(Math.random() * ROWS),
-    Math.floor(Math.random() * MOBILE_COLS),
-  ];
-
+  const [columnCount, setColumnCount] = useState(MOBILE_COLS);
   const [origin, setOrigin] = useState<[number, number] | undefined>();
 
+  // Function to determine column count based on screen width
+  const updateColumnCount = () => {
+    setColumnCount(window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS);
+  };
+
   useEffect(() => {
-    setOrigin(getRandomCoordinate());
+    // Initial column count
+    updateColumnCount();
+    
+    // Set random starting point for animation
+    setOrigin([
+      Math.floor(Math.random() * ROWS),
+      Math.floor(Math.random() * columnCount),
+    ]);
+    
+    // Add resize listener with throttling
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateColumnCount, 100);
+    };
+    
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimeout);
+    };
   }, []);
 
   if (!origin) return null;
 
   const getDistance = (row: number, col: number, from: [number, number]) => {
-    // Significantly increase the distance calculation to make the ripple effect travel much further
     return Math.sqrt((row - from[0]) ** 2 + (col - from[1]) ** 2) * 5;
   };
 
@@ -96,13 +116,11 @@ export default function Background({ className = "" }: BackgroundProps) {
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
       <div className="p-2">
-        {/* Mobile grid */}
-        <div className="grid grid-cols-12 auto-rows-fr w-full gap-1 md:hidden">
-          {[...Array(ROWS * MOBILE_COLS)].map((_, idx) => renderSquare(idx, MOBILE_COLS))}
-        </div>
-        {/* Desktop grid */}
-        <div className="hidden md:grid md:grid-cols-20 auto-rows-fr w-full gap-1">
-          {[...Array(ROWS * DESKTOP_COLS)].map((_, idx) => renderSquare(idx, DESKTOP_COLS))}
+        <div 
+          className={`grid auto-rows-fr w-full gap-1`} 
+          style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+        >
+          {[...Array(ROWS * columnCount)].map((_, idx) => renderSquare(idx, columnCount))}
         </div>
       </div>
     </div>
