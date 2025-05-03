@@ -36,15 +36,8 @@ export default function Background({ className = "" }: BackgroundProps) {
       <style>{`
         @keyframes load {
           0% { opacity: 0; transform: scale(0.95); }
-          20% { opacity: 0.4; transform: scale(1.01); }
-          40% { opacity: 0.5; transform: scale(1.02); }
-          60% { opacity: 0.4; transform: scale(1.01); }
+          50% { opacity: 0.5; transform: scale(1.02); }
           100% { opacity: 0.3; transform: scale(0.95); }
-        }
-        @keyframes subtle {
-          0% { opacity: 0.3; transform: scale(0.98); }
-          50% { opacity: 0.35; transform: scale(1); }
-          100% { opacity: 0.3; transform: scale(0.98); }
         }
         .grid-square {
           opacity: 0;
@@ -53,7 +46,9 @@ export default function Background({ className = "" }: BackgroundProps) {
           aspect-ratio: 1/1;
           border: 1px solid rgba(255,255,255,0.1);
           cursor: pointer;
-          animation: load 4s forwards, subtle 6s infinite 4s;
+          animation: load 3s forwards;
+          will-change: opacity, transform;
+          contain: content;
           transition: background-color 1.5s ease-out, border-color 1.5s ease-out, box-shadow 1.5s ease-out;
         }
         .grid-square:hover {
@@ -67,7 +62,10 @@ export default function Background({ className = "" }: BackgroundProps) {
       <div className="p-2">
         <div
           className="grid auto-rows-fr w-full gap-2"
-          style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+          style={{ 
+            gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+            contain: 'content'
+          }}
         >
           {[...Array(ROWS * columnCount)].map((_, idx) => {
             const row = Math.floor(idx / columnCount);
