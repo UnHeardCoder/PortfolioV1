@@ -1,126 +1,78 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 interface BackgroundProps {
   className?: string;
 }
 
-export default function Background({ className = "" }: BackgroundProps) {
-  const MOBILE_COLS = 12;
-  const DESKTOP_COLS = 20;
-  const ROWS = 31;
-  const BASE_DELAY = 0.3;
-  const NOISE = 0.05;
-  
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [clickOrigin, setClickOrigin] = useState<[number, number] | null>(null);
-  const [columnCount, setColumnCount] = useState(MOBILE_COLS);
-  const [origin, setOrigin] = useState<[number, number] | undefined>();
+const MOBILE_COLS = 12;
+const DESKTOP_COLS = 20;
+const ROWS = 31;
 
-  // Function to determine column count based on screen width
-  const updateColumnCount = () => {
-    setColumnCount(window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS);
-  };
+function getDistance(row: number, col: number, from: [number, number]) {
+  return Math.sqrt((row - from[0]) ** 2 + (col - from[1]) ** 2);
+}
+
+export default function Background({ className = "" }: BackgroundProps) {
+  const [columnCount, setColumnCount] = useState(MOBILE_COLS);
+  const [origin, setOrigin] = useState<[number, number]>([0, 0]);
 
   useEffect(() => {
-    // Initial column count
-    updateColumnCount();
-    
-    // Set random starting point for animation
+    setColumnCount(window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS);
     setOrigin([
       Math.floor(Math.random() * ROWS),
-      Math.floor(Math.random() * columnCount),
+      Math.floor(Math.random() * (window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS)),
     ]);
-    
-    // Add resize listener with throttling
-    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(updateColumnCount, 100);
+      setColumnCount(window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS);
     };
-    
     window.addEventListener("resize", handleResize);
-    
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimeout);
-    };
-  }, [columnCount]);
-
-  if (!origin) return null;
-
-  const getDistance = (row: number, col: number, from: [number, number]) => {
-    return Math.sqrt((row - from[0]) ** 2 + (col - from[1]) ** 2) * 5;
-  };
-
-  const handleSquareClick = (row: number, col: number) => {
-    setClickOrigin([row, col]);
-    setTimeout(() => setClickOrigin(null), 2000);
-  };
-
-  const renderSquare = (idx: number, cols: number) => {
-    const row = Math.floor(idx / cols);
-    const col = idx % cols;
-    const initialDelay =
-      getDistance(row, col, origin) / (Math.sqrt(ROWS ** 2 + cols ** 2)) * BASE_DELAY + Math.random() * NOISE;
-    const isOrigin = getDistance(row, col, origin) === 0;
-
-    const distance = clickOrigin ? getDistance(row, col, clickOrigin) : 0;
-    const maxDistance = Math.sqrt(ROWS ** 2 + cols ** 2) * 5;
-    const normalizedDistance = distance / maxDistance;
-    
-    const rippleDelay = distance * 0.015;
-    const rippleScale = clickOrigin ? Math.max(0.1, 1 - normalizedDistance * 0.5) : 1;
-
-    return (
-      <motion.div
-        className="bg-neutral-700/50 rounded-sm aspect-square border border-white/20 cursor-pointer"
-        key={idx}
-        initial={{ opacity: isOrigin ? 1 : 0, scale: isOrigin ? 1 : 0.3 }}
-        animate={{
-          opacity: isLoaded ? [0.5, 0.7, 0.5] : 0.5,
-          scale: rippleScale,
-        }}
-        transition={{
-          type: "spring",
-          bounce: 0.5,
-          delay: clickOrigin ? rippleDelay : initialDelay,
-          opacity: isLoaded ? {
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: Math.random() * 2
-          } : undefined,
-        }}
-        onClick={() => handleSquareClick(row, col)}
-        onAnimationComplete={() => {
-          if (isOrigin) {
-            setIsLoaded(true);
-          }
-        }}
-        whileHover={{
-          opacity: 1,
-          scale: 1.05,
-          backgroundColor: "rgb(124 45 18 / 0.8)",
-          borderColor: "rgb(249 115 22 / 1)",
-          transition: { 
-            duration: 0.1
-          }
-        }}
-      />
-    );
-  };
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>
+      <style>{`
+        @keyframes ripple {
+          0% { opacity: 0.3; transform: scale(0.95); }
+          30% { opacity: 0.6; transform: scale(1.02); }
+          100% { opacity: 0.3; transform: scale(0.95); }
+        }
+        .grid-square {
+          background: rgba(64,64,64,0.3);
+          border-radius: 0.125rem;
+          aspect-ratio: 1/1;
+          border: 1px solid rgba(255,255,255,0.1);
+          cursor: pointer;
+          animation: ripple 4s infinite;
+          transition: background-color 1.5s ease-out, border-color 1.5s ease-out, box-shadow 1.5s ease-out;
+        }
+        .grid-square:hover {
+          background: rgba(124,45,18,0.6) !important;
+          border-color: rgba(249,115,22,0.5) !important;
+          box-shadow: 0 0 10px rgba(249,115,22,0.3);
+          transform: scale(1.1) !important;
+          transition: transform 0.2s ease-in;
+        }
+      `}</style>
       <div className="p-2">
-        <div 
-          className={`grid auto-rows-fr w-full gap-1`} 
+        <div
+          className="grid auto-rows-fr w-full gap-2"
           style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
         >
-          {[...Array(ROWS * columnCount)].map((_, idx) => renderSquare(idx, columnCount))}
+          {[...Array(ROWS * columnCount)].map((_, idx) => {
+            const row = Math.floor(idx / columnCount);
+            const col = idx % columnCount;
+            const distance = getDistance(row, col, origin);
+            return (
+              <div
+                key={idx}
+                className="grid-square"
+                style={{ animationDelay: `${distance * 0.07}s` }}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
