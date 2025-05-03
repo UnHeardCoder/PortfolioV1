@@ -1,5 +1,3 @@
-
-
 import type React from "react";
 import { Github, Mail, Linkedin, ExternalLink, MapPin } from "lucide-react";
 import { cn } from "../lib/utils";
@@ -74,6 +72,7 @@ export default function Portfolio() {
                 </div>
                 <Link
                   href={project.href}
+                  aria-label={`View project: ${project.name}`}
                   className="sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-orange-500 hover:text-orange-600"
                 >
                   <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5" />
