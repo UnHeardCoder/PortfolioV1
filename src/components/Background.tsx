@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface BackgroundProps {
   className?: string;
@@ -18,6 +18,7 @@ export default function Background({ className = "" }: BackgroundProps) {
   const [clickOrigin, setClickOrigin] = useState<[number, number] | null>(null);
   const [columnCount, setColumnCount] = useState(MOBILE_COLS);
   const [origin, setOrigin] = useState<[number, number] | undefined>();
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Function to determine column count based on screen width
   const updateColumnCount = () => {
@@ -25,27 +26,29 @@ export default function Background({ className = "" }: BackgroundProps) {
   };
 
   useEffect(() => {
-    // Initial column count
-    updateColumnCount();
-    
-    // Set random starting point for animation
-    setOrigin([
-      Math.floor(Math.random() * ROWS),
-      Math.floor(Math.random() * columnCount),
-    ]);
-    
-    // Add resize listener with throttling
-    let resizeTimeout: NodeJS.Timeout;
+    // Defer initial grid/origin setup to idle time
+    const idleCallback =
+      (window as any).requestIdleCallback || function (cb: () => void) { setTimeout(cb, 1); };
+    idleCallback(() => {
+      updateColumnCount();
+      setOrigin([
+        Math.floor(Math.random() * ROWS),
+        Math.floor(Math.random() * (window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS)),
+      ]);
+    });
+
+    // Debounced resize handler
     const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(updateColumnCount, 100);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+      resizeTimeoutRef.current = setTimeout(() => {
+        updateColumnCount();
+      }, 200);
     };
-    
+
     window.addEventListener("resize", handleResize);
-    
     return () => {
       window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimeout);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
     };
   }, []);
 
