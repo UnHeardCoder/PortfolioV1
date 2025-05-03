@@ -17,6 +17,7 @@ function getDistance(row: number, col: number, from: [number, number]) {
 export default function Background({ className = "" }: BackgroundProps) {
   const [columnCount, setColumnCount] = useState(MOBILE_COLS);
   const [origin, setOrigin] = useState<[number, number]>([0, 0]);
+  const [showGrid, setShowGrid] = useState(false);
 
   useEffect(() => {
     setColumnCount(window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS);
@@ -28,6 +29,12 @@ export default function Background({ className = "" }: BackgroundProps) {
       setColumnCount(window.innerWidth >= 768 ? DESKTOP_COLS : MOBILE_COLS);
     };
     window.addEventListener("resize", handleResize);
+    // Defer grid rendering until browser is idle
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => setShowGrid(true));
+    } else {
+      setTimeout(() => setShowGrid(true), 100);
+    }
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -76,7 +83,7 @@ export default function Background({ className = "" }: BackgroundProps) {
             contain: 'content'
           }}
         >
-          {[...Array(ROWS * columnCount)].map((_, idx) => {
+          {showGrid && [...Array(ROWS * columnCount)].map((_, idx) => {
             const row = Math.floor(idx / columnCount);
             const col = idx % columnCount;
             const distance = getDistance(row, col, origin);
