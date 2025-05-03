@@ -31,7 +31,7 @@ export default function Background({ className = "" }: BackgroundProps) {
     window.addEventListener("resize", handleResize);
     // Defer grid rendering until browser is idle
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      (window as Window & { requestIdleCallback: (cb: IdleRequestCallback) => void }).requestIdleCallback(() => setShowGrid(true));
+      (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(() => setShowGrid(true));
     } else {
       setTimeout(() => setShowGrid(true), 100);
     }
