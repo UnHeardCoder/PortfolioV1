@@ -30,7 +30,7 @@ export default function Portfolio() {
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 pointer-events-auto">
           Welcome! I&apos;m Ben, a web developer building a strong foundation in modern
           web technologies. I&apos;m driven by a deep interest in learning how things work
-          and a determination to translate that knowledge into functional code. This
+          and a determination to translate that knowledge into functioning code. This
           portfolio represents the start of my professional journey, crafted to showcase 
           my current abilities and my commitment to continuous improvement and delivering 
           quality results from day one. I&apos;m ready to contribute.
