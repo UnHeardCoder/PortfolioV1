@@ -28,7 +28,9 @@ export default function Background({ className = "" }: BackgroundProps) {
   useEffect(() => {
     // Defer initial grid/origin setup to idle time
     const idleCallback =
-      (window as any).requestIdleCallback || function (cb: () => void) { setTimeout(cb, 1); };
+      typeof window !== "undefined" && "requestIdleCallback" in window
+        ? (window.requestIdleCallback as (cb: () => void) => void)
+        : (cb: () => void) => setTimeout(cb, 1);
     idleCallback(() => {
       updateColumnCount();
       setOrigin([
