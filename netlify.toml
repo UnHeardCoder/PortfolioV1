@@ -1,9 +1,10 @@
 [build]
   command = "pnpm build"
   publish = ".next"
-  environment = { NODE_VERSION = "18", PNPM_HOME = "/usr/local/share/.pnpm-global" }
 
 [build.environment]
+  NODE_VERSION = "18"
+  PNPM_HOME = "/usr/local/share/.pnpm-global"
   NODE_ENV = "production"
   NEXT_TELEMETRY_DISABLED = "1"
 
