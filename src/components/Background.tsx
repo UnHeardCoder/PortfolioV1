@@ -39,6 +39,11 @@ export default function Background({ className = "" }: BackgroundProps) {
           50% { opacity: 0.5; transform: scale(1.02); }
           100% { opacity: 0.3; transform: scale(0.95); }
         }
+        @keyframes subtle {
+          0% { opacity: 0.3; transform: scale(0.98); }
+          50% { opacity: 0.35; transform: scale(1); }
+          100% { opacity: 0.3; transform: scale(0.98); }
+        }
         .grid-square {
           opacity: 0;
           background: rgba(64,64,64,0.3);
@@ -46,7 +51,7 @@ export default function Background({ className = "" }: BackgroundProps) {
           aspect-ratio: 1/1;
           border: 1px solid rgba(255,255,255,0.1);
           cursor: pointer;
-          animation: load 3s forwards;
+          animation: load 3s forwards, subtle 6s infinite 3s;
           will-change: opacity, transform;
           contain: content;
           transition: background-color 1.5s ease-out, border-color 1.5s ease-out, box-shadow 1.5s ease-out;
