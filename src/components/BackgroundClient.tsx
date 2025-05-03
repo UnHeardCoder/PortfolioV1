@@ -1,8 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
+import type Background from "./Background";
 
-const Background = dynamic(() => import("./Background"), { ssr: false });
+const BackgroundDynamic = dynamic(() => import("./Background"), { ssr: false });
 
-export default function BackgroundClient(props: any) {
-  return <Background {...props} />;
+export default function BackgroundClient(props: React.ComponentProps<typeof BackgroundDynamic>) {
+  return <BackgroundDynamic {...props} />;
 } 
