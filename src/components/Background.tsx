@@ -47,7 +47,7 @@ export default function Background({ className = "" }: BackgroundProps) {
       window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimeout);
     };
-  }, []);
+  }, [columnCount]);
 
   if (!origin) return null;
 
