@@ -1,6 +1,5 @@
 "use client";
 import dynamic from "next/dynamic";
-import type Background from "./Background";
 
 const BackgroundDynamic = dynamic(() => import("./Background"), { ssr: false });
 
