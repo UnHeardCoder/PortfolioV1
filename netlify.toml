@@ -1,0 +1,14 @@
+[build]
+  command = "pnpm build"
+  publish = ".next"
+  environment = { NODE_VERSION = "18", PNPM_HOME = "/usr/local/share/.pnpm-global" }
+
+[build.environment]
+  NODE_ENV = "production"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[cache]
+  paths = [".next/cache", "node_modules", "pnpm-lock.yaml"]
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs" 
