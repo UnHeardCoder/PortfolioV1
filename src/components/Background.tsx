@@ -44,6 +44,10 @@ export default function Background({ className = "" }: BackgroundProps) {
           50% { opacity: 0.35; transform: scale(1); }
           100% { opacity: 0.3; transform: scale(0.98); }
         }
+        .grid-container {
+          contain: paint;
+          will-change: transform;
+        }
         .grid-square {
           opacity: 0;
           background: rgba(64,64,64,0.3);
@@ -64,7 +68,7 @@ export default function Background({ className = "" }: BackgroundProps) {
           transition: transform 0.2s ease-in;
         }
       `}</style>
-      <div className="p-2">
+      <div className="p-2 grid-container">
         <div
           className="grid auto-rows-fr w-full gap-2"
           style={{ 
