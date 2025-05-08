@@ -61,7 +61,7 @@ export default function Portfolio() {
           <div className="space-y-2 sm:space-y-3">
             {[
               { name: "Portfolio", desc: "This is the portfolio you are currently viewing", href: "https://benlundyportfolio.netlify.app/" },
-              { name: "Steam item tracker", desc: "A simple app to track the price of items on Steam", href: "https://steam-item-tracker-app-v1-2sz471r8v-unheardcoders-projects.vercel.app/?selectedItem=1" },
+              { name: "Steam item tracker", desc: "A simple app to track the price of items on Steam", href: "https://steam-item-tracker-app-v1.vercel.app/" },
               { name: "Next Project", desc: "coming soon", href: "/ComingSoon" },
             ].map((project, i) => (
               <div
