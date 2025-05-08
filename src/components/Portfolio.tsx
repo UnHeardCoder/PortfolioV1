@@ -60,6 +60,8 @@ export default function Portfolio() {
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2 sm:mb-3 pointer-events-auto">Featured Projects</h3>
           <div className="space-y-2 sm:space-y-3">
             {[
+              { name: "Portfolio", desc: "This is the portfolio you are currently viewing", href: "https://benlundyportfolio.netlify.app/" },
+              { name: "Steam item tracker", desc: "A simple app to track the price of items on Steam", href: "https://steam-item-tracker-app-v1-2sz471r8v-unheardcoders-projects.vercel.app/?selectedItem=1" },
               { name: "Next Project", desc: "coming soon", href: "/ComingSoon" },
             ].map((project, i) => (
               <div
