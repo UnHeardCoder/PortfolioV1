@@ -7,10 +7,8 @@ export default function Home() {
       <div className="absolute inset-0">
         <Background />
       </div>
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="pointer-events-none">
-          <Portfolio />
-        </div>
+      <div className="relative flex flex-col items-center pt-4 sm:pt-0 sm:justify-center min-h-screen pointer-events-none">
+        <Portfolio />
       </div>
     </div>
   );
